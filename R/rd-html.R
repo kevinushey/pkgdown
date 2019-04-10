@@ -4,7 +4,7 @@ as_html <- function(x, ...) {
 
 # Various types of text ------------------------------------------------------
 
-flatten_para <- function(x, ...) {
+flatten_para <- function(x, ..., .paste = TRUE) {
   if (length(x) == 0) {
     return(character())
   }
@@ -45,15 +45,21 @@ flatten_para <- function(x, ...) {
 
   blocks[needs_p] <- paste0("<p>", str_trim(blocks[needs_p]), "</p>")
 
-  paste0(blocks, collapse = "")
+  if (.paste)
+    paste0(blocks, collapse = "")
+  else
+    unname(blocks)
 }
 
 
-flatten_text <- function(x, ...) {
+flatten_text <- function(x, ..., .paste = TRUE) {
   if (length(x) == 0) return("")
 
   html <- purrr::map_chr(x, as_html, ...)
-  paste(html, collapse = "")
+  if (.paste)
+    paste(html, collapse = "")
+  else
+    unname(html)
 }
 
 #' @export
